@@ -1,0 +1,11 @@
+dataset <- read.table("household_power_consumption.txt", header=TRUE, sep=";", na.strings = "?")
+dataset$Date <- as.Date(dataset$Date, "%d/%m/%Y")
+smallerdataset <- subset(dataset, Date >= as.Date("2007-2-1") & Date <= as.Date("2007-2-2" ))
+dateTime <- paste(smallerdataset$Date, smallerdataset$Time)
+dateTime <- setNames(dateTime, "DateTime")
+smallerdataset <- cbind(dateTime, smallerdataset)
+smallerdataset$dateTime <- as.POSIXct(dateTime)
+plot(smallerdataset$Global_active_power~smallerdataset$dateTime, type="l", ylab="Global Active Power (kilowatts)", xlab="" )
+dev.copy(png,"plot2.png", width=480, height=480)
+dev.off()
+
